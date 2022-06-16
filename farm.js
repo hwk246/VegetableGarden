@@ -2,12 +2,11 @@
 const getYieldForPlant = (corn, environmentFactor) => {
   if (environmentFactor) {
     let YieldWithWeatherImpact = corn.yield;
-    for (const weatherType in environmentFactor) {
-      const strength = environmentFactor[`${weatherType}`];
-      YieldWithWeatherImpact +=
-        (YieldWithWeatherImpact *
-          corn.factor[`${weatherType}`][`${strength}`]) /
-        100;
+    for (weather in corn.factor) {
+      // sun, wind
+      const condition = environmentFactor[`${weather}`];
+      const factor = corn.factor[`${weather}`][`${condition}`] / 100;
+      YieldWithWeatherImpact += YieldWithWeatherImpact * factor;
     }
     return YieldWithWeatherImpact;
   } else {
@@ -21,7 +20,7 @@ const getYieldForCrop = (input) => {
 };
 
 // opbrengst in kg van een aantal planten van verschillende soorten
-const getTotalYield = (vegetableCropsYield) => {
+const getTotalYield = (vegetableCropsYield, environmentFactor) => {
   let totalYield = 0;
   vegetableCropsYield.crops.forEach((vegetable) => {
     totalYield += vegetable.crop.yield * vegetable.numCrops;

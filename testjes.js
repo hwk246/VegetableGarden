@@ -1,6 +1,8 @@
+const { getYieldForCrop } = require("./farm");
+
 const corn = {
   name: "corn",
-  yield: 30,
+  yield: 3,
   factor: {
     sun: {
       low: -50,
@@ -10,30 +12,56 @@ const corn = {
     wind: {
       strong: -60,
       medium: -30,
-      lite: 0,
+      light: 0,
     },
   },
 };
+const pumpkin = {
+  name: "pumpkin",
+  yield: 4,
+  factor: {
+    sun: {
+      low: -50,
+      medium: 0,
+      high: 50,
+    },
+    soil: {
+      gravel: -60,
+      sand: -20,
+      clay: 15,
+    },
+  },
+};
+const crops = [
+  { crop: corn, numCrops: 5 },
+  { crop: pumpkin, numCrops: 2 },
+];
 
 const environmentFactors = {
   sun: "high",
-  wind: "strong",
+  wind: "light",
+  rain: "medium",
+  soil: "gravel",
 };
 
-const getYieldForPlant = (corn, environmentFactor) => {
-  if (environmentFactor) {
-    const impactValue = 1;
-    for (const weatherType in environmentFactor) {
-      console.log(weatherType);
-      const strength = environmentFactor[`${weatherType}`];
-      console.log(strength);
-      // impactValue =
-      console.log(corn.factor[`${weatherType}`][`${strength}`]);
+const getTotalYield = (vegetableCropsYield, environmentFactor) => {
+  let totalYield = 0;
+  console.log("-----> vegetable.crops", vegetableCropsYield.crops);
+  vegetableCropsYield.crops.forEach((vegetable) => {
+    if (environmentFactor) {
+      console.log("-----> vegetable ", vegetable);
+      // for (subVegetable in )
+      const plantYield = vegetable.numCrops * vegetable.crop.yield;
+      console.log("------> plantYield", plantYield);
+      console.log("------>   vegetable.crop.factor", vegetable.crop.factor);
+    } else {
+      vegetableCropsYield.crops.forEach((vegetable) => {
+        totalYield += vegetable.crop.yield * vegetable.numCrops;
+        // console.log(totalYield);
+      });
+      return totalYield;
     }
-    return corn.yield * impactValue;
-  } else {
-    return corn.yield;
-  }
+  });
 };
 
-console.log(getYieldForPlant(corn, environmentFactors));
+getTotalYield({ crops }, environmentFactors);

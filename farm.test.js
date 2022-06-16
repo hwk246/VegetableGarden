@@ -30,23 +30,19 @@ describe("getYieldForPlant", () => {
         wind: {
           strong: -60,
           medium: -30,
-          lite: 0,
-        },
-        soil: {
-          sand: -10,
-          kley: 10,
-          gravel: -50,
+          light: 0,
         },
       },
     };
 
     const environmentFactors = {
       sun: "high",
-      wind: "strong",
-      soil: "kley",
+      wind: "light",
+      rain: "medium",
+      soil: "gravel",
     };
 
-    expect(getYieldForPlant(corn, environmentFactors)).toBe(19.8);
+    expect(getYieldForPlant(corn, environmentFactors)).toBe(45);
   });
 });
 
@@ -88,6 +84,56 @@ describe("getTotalYield", () => {
     };
     const crops = [{ crop: corn, numCrops: 0 }];
     expect(getTotalYield({ crops })).toBe(0);
+  });
+
+  /////////////////////////////////////////////////////
+
+  test("Calculate total yield incl environmental factor", () => {
+    const corn = {
+      name: "corn",
+      yield: 3,
+      factor: {
+        sun: {
+          low: -50,
+          medium: 0,
+          high: 50,
+        },
+        wind: {
+          strong: -60,
+          medium: -30,
+          light: 0,
+        },
+      },
+    };
+    const pumpkin = {
+      name: "pumpkin",
+      yield: 4,
+      factor: {
+        sun: {
+          low: -50,
+          medium: 0,
+          high: 50,
+        },
+        soil: {
+          gravel: -60,
+          sand: -20,
+          clay: 15,
+        },
+      },
+    };
+    const crops = [
+      { crop: corn, numCrops: 5 },
+      { crop: pumpkin, numCrops: 2 },
+    ];
+
+    const environmentFactors = {
+      sun: "high",
+      wind: "light",
+      rain: "medium",
+      soil: "gravel",
+    };
+
+    expect(getTotalYield({ crops }, environmentFactors)).toBe(23);
   });
 });
 
