@@ -7,19 +7,33 @@ const corn = {
       medium: 0,
       high: 50,
     },
+    wind: {
+      strong: -60,
+      medium: -30,
+      lite: 0,
+    },
   },
 };
 
 const environmentFactors = {
-  sun: "low",
+  sun: "high",
+  wind: "strong",
 };
 
 const getYieldForPlant = (corn, environmentFactor) => {
-  const growthBySun = environmentFactor.sun;
-  console.log(growthBySun);
-  console.log(corn.factor.sun[`${growthBySun}`]);
-  //   const sunValue = corn.sun[`${growthBySun}`;
-  //   return corn.yield + (corn.yield * sunValue) / 100;
+  if (environmentFactor) {
+    const impactValue = 1;
+    for (const weatherType in environmentFactor) {
+      console.log(weatherType);
+      const strength = environmentFactor[`${weatherType}`];
+      console.log(strength);
+      // impactValue =
+      console.log(corn.factor[`${weatherType}`][`${strength}`]);
+    }
+    return corn.yield * impactValue;
+  } else {
+    return corn.yield;
+  }
 };
 
 console.log(getYieldForPlant(corn, environmentFactors));

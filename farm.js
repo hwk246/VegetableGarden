@@ -1,8 +1,15 @@
-//  opbrengst in kg voor een plant
+//  opbrengst in kg voor een plantsoort
 const getYieldForPlant = (corn, environmentFactor) => {
   if (environmentFactor) {
-    const sunValue = corn.factor.sun[environmentFactor.sun] / 100 + 1;
-    return corn.yield * sunValue;
+    let YieldWithWeatherImpact = corn.yield;
+    for (const weatherType in environmentFactor) {
+      const strength = environmentFactor[`${weatherType}`];
+      YieldWithWeatherImpact +=
+        (YieldWithWeatherImpact *
+          corn.factor[`${weatherType}`][`${strength}`]) /
+        100;
+    }
+    return YieldWithWeatherImpact;
   } else {
     return corn.yield;
   }
