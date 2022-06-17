@@ -74,7 +74,7 @@ describe("getTotalYield", () => {
       { crop: corn, numCrops: 5 },
       { crop: pumpkin, numCrops: 2 },
     ];
-    expect(getTotalYield({ crops })).toBe(23);
+    expect(getTotalYield({ crops })).toMatchObject({ corn: 15, pumpkin: 8 });
   });
 
   test("Calculate total yield with 0 amount", () => {
@@ -83,10 +83,8 @@ describe("getTotalYield", () => {
       yield: 3,
     };
     const crops = [{ crop: corn, numCrops: 0 }];
-    expect(getTotalYield({ crops })).toBe(0);
+    expect(getTotalYield({ crops })).toMatchObject({ corn: 0 });
   });
-
-  /////////////////////////////////////////////////////
 
   test("Calculate total yield incl environmental factor", () => {
     const corn = {
@@ -105,6 +103,7 @@ describe("getTotalYield", () => {
         },
       },
     };
+
     const pumpkin = {
       name: "pumpkin",
       yield: 4,
@@ -115,15 +114,33 @@ describe("getTotalYield", () => {
           high: 50,
         },
         soil: {
-          gravel: -60,
+          gravel: -50,
           sand: -20,
           clay: 15,
+        },
+      },
+    };
+
+    const latice = {
+      name: "latice",
+      yield: 5,
+      factor: {
+        sun: {
+          low: -20,
+          medium: 0,
+          high: 10,
+        },
+        soil: {
+          gravel: -10,
+          sand: -30,
+          clay: 25,
         },
       },
     };
     const crops = [
       { crop: corn, numCrops: 5 },
       { crop: pumpkin, numCrops: 2 },
+      { crop: latice, numCrops: 3 },
     ];
 
     const environmentFactors = {
@@ -133,7 +150,11 @@ describe("getTotalYield", () => {
       soil: "gravel",
     };
 
-    expect(getTotalYield({ crops }, environmentFactors)).toBe(23);
+    expect(getTotalYield({ crops }, environmentFactors)).toMatchObject({
+      corn: 22.5,
+      pumpkin: 6,
+      latice: 14.85,
+    });
   });
 });
 
