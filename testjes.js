@@ -46,14 +46,27 @@ const environmentFactors = {
 
 const getTotalYield = (vegetableCropsYield, environmentFactor) => {
   let totalYield = 0;
+  let yieldWeatherImpact = 0;
+  const plantYieldlist = [];
   console.log("-----> vegetable.crops", vegetableCropsYield.crops);
   vegetableCropsYield.crops.forEach((vegetable) => {
     if (environmentFactor) {
-      console.log("-----> vegetable ", vegetable);
-      // for (subVegetable in )
-      const plantYield = vegetable.numCrops * vegetable.crop.yield;
-      console.log("------> plantYield", plantYield);
-      console.log("------>   vegetable.crop.factor", vegetable.crop.factor);
+      // console.log("-----> vegetable ", vegetable);
+
+      let plantYield = vegetable.numCrops * vegetable.crop.yield;
+      // console.log("------> plantYield", plantYield);
+      // console.log("------>   vegetable.crop.factor", vegetable.crop.factor);
+      for (const weathercondition in vegetable.crop.factor) {
+        const condition = environmentFactor[`${weathercondition}`];
+        console.log("--------> condition", condition);
+        const factor =
+          vegetable.crop.factor[`${weathercondition}`][`${condition}`] / 100;
+        console.log("------> factor", factor);
+        plantYield += plantYield * factor;
+      }
+      console.log(plantYield);
+      plantYieldlist.push(plantYield);
+      console.log("------> plantYieldList ", plantYieldlist);
     } else {
       vegetableCropsYield.crops.forEach((vegetable) => {
         totalYield += vegetable.crop.yield * vegetable.numCrops;
