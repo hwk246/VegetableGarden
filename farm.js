@@ -22,11 +22,26 @@ const getYieldForCrop = (input) => {
 // opbrengst in kg van een aantal planten van verschillende soorten
 const getTotalYield = (vegetableCropsYield, environmentFactor) => {
   let totalYield = 0;
+  const plantYieldTotallist = [];
   vegetableCropsYield.crops.forEach((vegetable) => {
-    totalYield += vegetable.crop.yield * vegetable.numCrops;
+    if (environmentFactor) {
+      let plantYield = vegetable.numCrops * vegetable.crop.yield;
+      for (const weathercondition in vegetable.crop.factor) {
+        const condition = environmentFactor[`${weathercondition}`];
+        const factor =
+          vegetable.crop.factor[`${weathercondition}`][`${condition}`] / 100;
+        plantYield += plantYield * factor;
+      }
+      plantYieldTotallist.push(plantYield);
+    } else {
+      totalYield = vegetable.crop.yield * vegetable.numCrops;
+      plantYieldTotallist.push(totalYield);
+    }
   });
-  return totalYield;
+  return plantYieldTotallist;
 };
+
+getTotalYield({ crops }, environmentFactors);
 
 // kosten voor een aantal plantjes van een of verschillende soorten
 const getTotalCostsForCrop = (vegetableNumberCosts) => {

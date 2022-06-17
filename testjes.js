@@ -16,6 +16,7 @@ const corn = {
     },
   },
 };
+
 const pumpkin = {
   name: "pumpkin",
   yield: 4,
@@ -32,9 +33,27 @@ const pumpkin = {
     },
   },
 };
+
+const latice = {
+  name: "latice",
+  yield: 5,
+  factor: {
+    sun: {
+      low: -20,
+      medium: 0,
+      high: 10,
+    },
+    soil: {
+      gravel: -10,
+      sand: -30,
+      clay: 35,
+    },
+  },
+};
 const crops = [
   { crop: corn, numCrops: 5 },
   { crop: pumpkin, numCrops: 2 },
+  { crop: latice, numCrops: 8 },
 ];
 
 const environmentFactors = {
@@ -46,35 +65,23 @@ const environmentFactors = {
 
 const getTotalYield = (vegetableCropsYield, environmentFactor) => {
   let totalYield = 0;
-  let yieldWeatherImpact = 0;
-  const plantYieldlist = [];
-  console.log("-----> vegetable.crops", vegetableCropsYield.crops);
+  const plantYieldTotallist = [];
   vegetableCropsYield.crops.forEach((vegetable) => {
     if (environmentFactor) {
-      // console.log("-----> vegetable ", vegetable);
-
       let plantYield = vegetable.numCrops * vegetable.crop.yield;
-      // console.log("------> plantYield", plantYield);
-      // console.log("------>   vegetable.crop.factor", vegetable.crop.factor);
       for (const weathercondition in vegetable.crop.factor) {
         const condition = environmentFactor[`${weathercondition}`];
-        console.log("--------> condition", condition);
         const factor =
           vegetable.crop.factor[`${weathercondition}`][`${condition}`] / 100;
-        console.log("------> factor", factor);
         plantYield += plantYield * factor;
       }
-      console.log(plantYield);
-      plantYieldlist.push(plantYield);
-      console.log("------> plantYieldList ", plantYieldlist);
+      plantYieldTotallist.push(plantYield);
     } else {
-      vegetableCropsYield.crops.forEach((vegetable) => {
-        totalYield += vegetable.crop.yield * vegetable.numCrops;
-        // console.log(totalYield);
-      });
-      return totalYield;
+      totalYield = vegetable.crop.yield * vegetable.numCrops;
+      plantYieldTotallist.push(totalYield);
     }
   });
+  return plantYieldTotallist;
 };
 
 getTotalYield({ crops }, environmentFactors);
