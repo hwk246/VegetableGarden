@@ -320,7 +320,7 @@ describe("getProfitForCrop", () => {
   test("calculate profit for multiple crops incl. environment", () => {
     const corn = {
       name: "corn",
-      yield: 3,
+      yield: 30,
       salesprice: 2,
       costs: 1,
       factor: {
@@ -339,7 +339,7 @@ describe("getProfitForCrop", () => {
 
     const pumpkin = {
       name: "pumpkin",
-      yield: 4,
+      yield: 40,
       salesprice: 3,
       costs: 1,
       factor: {
@@ -353,12 +353,17 @@ describe("getProfitForCrop", () => {
           sand: -20,
           clay: 15,
         },
+        rain: {
+          heavy: -50,
+          medium: 50,
+          dry: 0,
+        },
       },
     };
 
     const latice = {
       name: "latice",
-      yield: 5,
+      yield: 15,
       salesprice: 1,
       costs: 2,
       factor: {
@@ -381,11 +386,11 @@ describe("getProfitForCrop", () => {
     ];
 
     const environmentFactors = {
-      sun: "high",
+      sun: "low",
       wind: "light",
-      rain: "medium",
+      rain: "dry",
       soil: "gravel",
     };
-    expect(getProfitForCrop({ crops }, environmentFactors)).toBe(64.85);
+    expect(getProfitForCrop({ crops }, environmentFactors)).toBe(229.4);
   });
 });

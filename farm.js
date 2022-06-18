@@ -1,4 +1,5 @@
-//  opbrengst in kg voor een plantsoort
+// Yield for one specific vegetable type, Calculation can be done with or without environmental factor
+
 const getYieldForPlant = (corn, environmentFactor) => {
   if (environmentFactor) {
     let YieldWithWeatherImpact = corn.yield;
@@ -14,12 +15,14 @@ const getYieldForPlant = (corn, environmentFactor) => {
   }
 };
 
-// opbrengst in kg voor een aantal planten van 1 soort
+// Yield of one specific vegetabletype without any environmental factor
+
 const getYieldForCrop = (input) => {
   return input.numCrops * input.crop.yield;
 };
 
-// opbrengst in kg van een aantal planten van verschillende soorten
+// Yield in kg for several vegetable types. Calculation can be done with or without environmental factor. Outcome is Object.{vegetablename: amount}
+
 const getTotalYield = (vegetableCropsYield, environmentFactor) => {
   const plantYieldTotallist = {};
   vegetableCropsYield.crops.forEach((vegetable) => {
@@ -40,7 +43,8 @@ const getTotalYield = (vegetableCropsYield, environmentFactor) => {
   return plantYieldTotallist;
 };
 
-// kosten voor een aantal plantjes van een of verschillende soorten
+// Costs for several vegetabletypes. Environmental factor has no effect on the costs
+
 const getTotalCostsForCrop = (vegetableNumberCosts) => {
   let totalCosts = 0;
   vegetableNumberCosts.crops.forEach((vegetable) => {
@@ -48,6 +52,8 @@ const getTotalCostsForCrop = (vegetableNumberCosts) => {
   });
   return totalCosts;
 };
+
+// Revenue for several plants. calculation can be done with or without environmental factor
 
 const getRevenueForCrop = (crops, environmentFactors) => {
   if (environmentFactors) {
@@ -63,6 +69,8 @@ const getRevenueForCrop = (crops, environmentFactors) => {
   });
   return plantTotalRevenue;
 };
+
+// Revenue minus Costs of al vegetables. Calculation can be done with or without environmental factor.
 
 const getProfitForCrop = (vegtebaleData, environmentFactors) => {
   const profit =
