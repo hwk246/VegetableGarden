@@ -49,13 +49,20 @@ const getTotalCostsForCrop = (vegetableNumberCosts) => {
   return totalCosts;
 };
 
-const getRevenueForCrop = (cropsRevenue) => {
-  let totalRevenue = 0;
-  cropsRevenue.crops.forEach((revenue) => {
-    totalRevenue +=
-      revenue.crop.yield * revenue.crop.revenue * revenue.numCrops;
+const getRevenueForCrop = (crops, environment) => {
+  if (environment) {
+    totalYieldList = getTotalYield(crops, environment);
+  } else {
+    totalYieldList = getTotalYield(crops);
+  }
+  let plantTotalRevenue = 0;
+  crops.crops.forEach((plant) => {
+    const plantRevenue = plant.crop.revenue;
+    const plantName = plant.crop.name;
+    plantTotalRevenue += plantRevenue * totalYieldList[`${plantName}`];
   });
-  return totalRevenue;
+
+  return plantTotalRevenue;
 };
 
 const getProfitForCrop = (vegtebaleData) => {
